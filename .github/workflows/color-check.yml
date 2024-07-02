@@ -30,7 +30,6 @@ jobs:
           set -o pipefail
           svgFiles=$(git diff origin/${{ env.TARGET_BRANCH }} --diff-filter=ACMRTUX  --name-only | grep '.svg$')
           npx svg-color-linter --colors material-colors.yml ${svgFiles} 2>&1 | tee build.log
-        continue-on-error: true
 
       - name: Notify failure 📢
         if: failure()
