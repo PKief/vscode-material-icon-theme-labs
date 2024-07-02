@@ -58,13 +58,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `## Review failed 🚨
-
-                Please make sure that all SVG files use only colors from the Material Color Palette. More details:
-
-                \`\`\`\n${{env.COLOR_CHECK_OUTPUT}}\n\`\`\`
-
-                Please refer to the [contribution guidelines](https://github.com/material-extensions/vscode-material-icon-theme/blob/main/CONTRIBUTING.md#material-design-colors) for more information.`
+              body: `## Review failed 🚨\n\nPlease make sure that all SVG files use only colors from the Material Color Palette. More details:\n\n\`\`\`\n${{env.COLOR_CHECK_OUTPUT}}\n\`\`\`\n\nPlease refer to the [contribution guidelines](https://github.com/material-extensions/vscode-material-icon-theme/blob/main/CONTRIBUTING.md#material-design-colors) for more information.`
             });
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
