@@ -73,7 +73,7 @@ jobs:
       - name: Generate Icon Preview
         run: |
           cd main
-          npx svg-icon-review --bigIcon ${{env.SVG_FILES}})
+          npx svg-icon-review --bigIcon ${{env.SVG_FILES}}
 
       - name: Install jq ⚙️
         run: sudo apt-get install jq
