@@ -55,11 +55,13 @@ jobs:
         with:
           script: |
             const colorCheckOutput = require('fs').readFileSync('main/color_check_output.txt', 'utf8');
+            const bulletPoints = colorCheckOutput.split('\n').map(line => `- ${line}`).join('\n');
+
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `## Review failed 🚨\n\nPlease make sure that all SVG files use only colors from the Material Color Palette. More details:\n\n\`\`\`\n${colorCheckOutput}\n\`\`\`\n\nPlease refer to the [contribution guidelines](https://github.com/material-extensions/vscode-material-icon-theme/blob/main/CONTRIBUTING.md#material-design-colors) for more information.`
+              body: `## Review failed 🚨\n\nPlease make sure that all of your SVG files use colors from the Material Color Palette:\n\n${bulletPoints}\n\nPlease refer to the [contribution guidelines](https://github.com/material-extensions/vscode-material-icon-theme/blob/main/CONTRIBUTING.md#material-design-colors) for more information.`
             });
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
