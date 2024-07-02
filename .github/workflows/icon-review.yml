@@ -47,18 +47,19 @@ jobs:
         run: |
           cd main
           set -o pipefail
-          echo "COLOR_CHECK_OUTPUT=$(npx svg-color-linter --colors material-colors.yml ${{env.SVG_FILES}})" >> $GITHUB_ENV
+          npx svg-color-linter --colors material-colors.yml ${{env.SVG_FILES}} > color_check_output.txt
 
       - name: Color check failed 📢
         if: failure()
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         with:
           script: |
+            const colorCheckOutput = fs.readFileSync('./main/color_check_output.txt', 'utf8');
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `## Review failed 🚨\n\nPlease make sure that all SVG files use only colors from the Material Color Palette. More details:\n\n\`\`\`\n${{env.COLOR_CHECK_OUTPUT}}\n\`\`\`\n\nPlease refer to the [contribution guidelines](https://github.com/material-extensions/vscode-material-icon-theme/blob/main/CONTRIBUTING.md#material-design-colors) for more information.`
+              body: `## Review failed 🚨\n\nPlease make sure that all SVG files use only colors from the Material Color Palette. More details:\n\n\`\`\`\n${colorCheckOutput}\n\`\`\`\n\nPlease refer to the [contribution guidelines](https://github.com/material-extensions/vscode-material-icon-theme/blob/main/CONTRIBUTING.md#material-design-colors) for more information.`
             });
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
