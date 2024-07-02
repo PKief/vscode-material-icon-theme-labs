@@ -35,12 +35,45 @@ jobs:
           path: main
           persist-credentials: false
 
-      - name: Review SVG files 🔍
+      - name: Get changed SVG file names 📄
         run: |
           cd main
-          svgFiles=$(git diff --no-index ../main ../fork --diff-filter=ACMRTUX --name-only | grep '.svg$')
-          echo "SVG files changed: ${svgFiles}"
-          npx svg-icon-review --bigIcon ${svgFiles}
+          svgFiles=$(git diff --no-index ../main ../fork --diff-filter=ACMRTUX --name-only | grep '.svg$' | tr '\n' ' ')
+          echo "Changed SVG files: $svgFiles"
+          echo "SVG_FILES=${svgFiles}" >> $GITHUB_ENV
+
+      - name: Review SVG files
+        run: |
+          cd main
+          set -o pipefail
+          npx svg-color-linter --colors material-colors.yml ${{env.SVG_FILES}} > color_check_output.txt
+
+      - name: Review failed 📢
+        if: failure()
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          script: |
+            const colorCheckOutput = require('fs').readFileSync('main/color_check_output.txt', 'utf8');
+            console.error(colorCheckOutput);
+            const bulletPoints = colorCheckOutput
+                                    .split('\n')
+                                    .filter(line => line !== '')
+                                    .map(line => `- ${line}`)
+                                    .join('\n');
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## Review failed 🚨\n\nPlease make sure that all of your SVG files use colors from the Material Color Palette:\n\n${bulletPoints}\n\nPlease refer to the [contribution guidelines](https://github.com/material-extensions/vscode-material-icon-theme/blob/main/CONTRIBUTING.md#material-design-colors) for more information.`
+            });
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate Icon Preview
+        run: |
+          cd main
+          npx svg-icon-review --bigIcon ${{env.SVG_FILES}}
 
       - name: Install jq ⚙️
         run: sudo apt-get install jq
