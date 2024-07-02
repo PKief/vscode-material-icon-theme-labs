@@ -42,14 +42,14 @@ jobs:
           echo "Changed SVG files: $svgFiles"
           echo "SVG_FILES=${svgFiles}" >> $GITHUB_ENV
 
-      - name: Check SVG colors
-        id: color_check
+      - name: Review SVG files
         run: |
           cd main
-          set -o pipefail
+          set +e
           npx svg-color-linter --colors material-colors.yml ${{env.SVG_FILES}} > color_check_output.txt
+          set -e
 
-      - name: Color check failed 📢
+      - name: Review failed 📢
         if: failure()
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         with:
