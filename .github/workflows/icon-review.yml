@@ -55,7 +55,11 @@ jobs:
         with:
           script: |
             const colorCheckOutput = require('fs').readFileSync('main/color_check_output.txt', 'utf8');
-            const bulletPoints = colorCheckOutput.split('\n').map(line => `- ${line}`).join('\n');
+            const bulletPoints = colorCheckOutput
+                                    .split('\n')
+                                    .filter(line => line !== '')
+                                    .map(line => `- ${line}`)
+                                    .join('\n');
 
             github.rest.issues.createComment({
               issue_number: context.issue.number,
