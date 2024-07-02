@@ -58,7 +58,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `## Failure 🚨\n\nSome of the icons use an invalid color. More details:\n\n\`\`\`\n${{env.COLOR_CHECK_OUTPUT}}\n\`\`\`\n\nPlease refer to the [contribution guidelines](https://github.com/material-extensions/vscode-material-icon-theme/blob/main/CONTRIBUTING.md#material-design-colors) for more information.`
+              body: `## Review failed 🚨\n\nPlease make sure that all SVG files use only colors from the Material Color Palette. More details:\n\n\`\`\`\n${{env.COLOR_CHECK_OUTPUT}}\n\`\`\`\n\nPlease refer to the [contribution guidelines](https://github.com/material-extensions/vscode-material-icon-theme/blob/main/CONTRIBUTING.md#material-design-colors) for more information.`
             });
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -86,7 +86,12 @@ jobs:
           script: |
             const image_url = "${{ env.image_url }}";
             console.log('URL: '+image_url);
-            const commentBody = '## Preview \n\nThis preview shows you how your changes will look on the different themes: \n\n ![Generated Preview](' + image_url + ') \n\n You can find more information how to contribute in the [contribution guidelines](https://github.com/material-extensions/vscode-material-icon-theme/blob/main/CONTRIBUTING.md).';
+            const commentBody = `## Automated review successful ✅
+              This preview shows you how your changes will look on the different themes:
+
+              ![Generated Preview](' + image_url + ')
+
+              Please wait until the maintainers have approved your changes.`;
 
             github.rest.issues.createComment({
               issue_number: context.issue.number,
