@@ -45,9 +45,8 @@ jobs:
       - name: Review SVG files
         run: |
           cd main
-          set +e
-          npx svg-color-linter --colors material-colors.yml ${{env.SVG_FILES}} > color_check_output.txt 2>&1
-          set -e
+          set -o pipefail
+          npx svg-color-linter --colors material-colors.yml ${{env.SVG_FILES}} > color_check_output.txt
 
       - name: Review failed 📢
         if: failure()
