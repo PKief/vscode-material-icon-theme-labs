@@ -46,9 +46,7 @@ jobs:
         run: |
           cd main
           set -o pipefail
-          colorCheckOutput=$(npx svg-color-linter --colors material-colors.yml ${{env.SVG_FILES}})
-          echo "$colorCheckOutput"
-          echo "$colorCheckOutput" > color_check_output.txt
+          npx svg-color-linter --colors material-colors.yml ${{env.SVG_FILES}} > color_check_output.txt
 
       - name: Review failed 📢
         if: failure()
@@ -56,6 +54,7 @@ jobs:
         with:
           script: |
             const colorCheckOutput = require('fs').readFileSync('main/color_check_output.txt', 'utf8');
+            console.error(colorCheckOutput);
             const bulletPoints = colorCheckOutput
                                     .split('\n')
                                     .filter(line => line !== '')
