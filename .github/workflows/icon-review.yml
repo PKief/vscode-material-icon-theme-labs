@@ -45,8 +45,10 @@ jobs:
       - name: Check SVG colors
         id: color_check
         run: |
+          echo "Current path: $(pwd)"
           set -o pipefail
-          echo "COLOR_CHECK_OUTPUT=$(npx svg-color-linter --colors material-colors.yml ${{env.SVG_FILES}})" >> $GITHUB_ENV
+          COLOR_CHECK_OUTPUT=$(npx svg-color-linter --colors material-colors.yml ${{env.SVG_FILES}}) || exit $?
+          echo "COLOR_CHECK_OUTPUT=$COLOR_CHECK_OUTPUT" >> $GITHUB_ENV
 
       - name: Color check failed 📢
         if: failure()
