@@ -45,6 +45,7 @@ jobs:
       - name: Check SVG colors
         id: color_check
         run: |
+          cd main
           echo "Current path: $(pwd)"
           set -o pipefail
           COLOR_CHECK_OUTPUT=$(npx svg-color-linter --colors material-colors.yml ${{env.SVG_FILES}}) || exit $?
@@ -66,6 +67,7 @@ jobs:
 
       - name: Generate Icon Preview
         run: |
+          cd main
           npx svg-icon-review --bigIcon ${{env.SVG_FILES}})
 
       - name: Install jq ⚙️
