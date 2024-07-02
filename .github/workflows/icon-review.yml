@@ -48,7 +48,7 @@ jobs:
           cd main
           echo "Current path: $(pwd)"
           set -o pipefail
-          COLOR_CHECK_OUTPUT=$(npx svg-color-linter --colors material-colors.yml ${{env.SVG_FILES}}) || exit $?
+          COLOR_CHECK_OUTPUT=$(npx svg-color-linter --colors material-colors.yml "${{env.SVG_FILES}}") || exit $?
           echo "COLOR_CHECK_OUTPUT=$COLOR_CHECK_OUTPUT" >> $GITHUB_ENV
 
       - name: Color check failed 📢
