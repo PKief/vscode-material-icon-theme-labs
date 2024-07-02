@@ -38,7 +38,7 @@ jobs:
       - name: Get changed SVG file names 📄
         run: |
           cd main
-          svgFiles=$(git diff --no-index ../main ../fork --diff-filter=ACMRTUX --name-only | grep '.svg$')
+          svgFiles=$(git diff --no-index ../main ../fork --diff-filter=ACMRTUX --name-only | grep '.svg$' | tr '\n' ' ')
           echo "Changed SVG files: $svgFiles"
           echo "SVG_FILES=${svgFiles}" >> $GITHUB_ENV
 
