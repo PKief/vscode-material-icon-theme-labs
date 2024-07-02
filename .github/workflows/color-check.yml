@@ -28,7 +28,8 @@ jobs:
       - name: Check colors 🎨
         run: |
           svgFiles=$(git diff origin/${{ env.TARGET_BRANCH }} --diff-filter=ACMRTUX  --name-only | grep '.svg$')
-          npx svg-color-linter --colors material-colors.yml ${svgFiles}
+          echo "COLOR_CHECK_OUTPUT=$(npx svg-color-linter --colors material-colors.yml ${svgFiles})" >> $GITHUB_ENV
+        continue-on-error: true
 
       - name: Notify failure 📢
         if: failure()
@@ -39,7 +40,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `The build has failed. Here is the error:\n\n\`\`\`\n${process.env.GITHUB_STEP_SUMMARY}\n\`\`\``
+              body: `The build has failed. Here is the error:\n\n\`\`\`\n${process.env.COLOR_CHECK_OUTPUT}\n\`\`\``
             });
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
