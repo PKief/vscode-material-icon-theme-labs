@@ -19,11 +19,6 @@ jobs:
       pull-requests: write
 
     steps:
-      - name: Setup Platform 🛠
-        uses: oven-sh/setup-bun@123c6c4e2fea3eb7bffaa91a85eb6b3d505bf7af # v2
-        with:
-          bun-version: 1.1.13
-
       - name: Checkout Fork 🛎️
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
@@ -46,7 +41,7 @@ jobs:
           svgFiles=$(git diff --no-index ../main ../fork --diff-filter=ACMRTUX --name-only | grep '.svg$' | tr '\n' ' ')
           echo "SVG files changed: ${svgFiles}"
           echo "Generating preview..."
-          bunx --bun svg-icon-review --bigIcon ${svgFiles}
+          npx svg-icon-review --bigIcon ${svgFiles}
 
       - name: Install jq ⚙️
         run: sudo apt-get install jq
