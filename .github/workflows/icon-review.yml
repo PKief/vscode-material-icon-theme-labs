@@ -43,9 +43,10 @@ jobs:
       - name: Review SVG files 🔍
         run: |
           cd main
-          svgFiles=$(git diff --no-index ../main ../fork --diff-filter=ACMRTUX --name-only | grep '.svg$')
+          svgFiles=$(git diff --no-index ../main ../fork --diff-filter=ACMRTUX --name-only | grep '.svg$' | tr '\n' ' ')
           echo "SVG files changed: ${svgFiles}"
-          bunx svg-icon-review --bigIcon ${svgFiles}
+          echo "Generating preview..."
+          bunx --bun svg-icon-review --bigIcon ${svgFiles}
 
       - name: Install jq ⚙️
         run: sudo apt-get install jq
