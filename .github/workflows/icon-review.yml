@@ -40,17 +40,18 @@ jobs:
           path: main
           persist-credentials: false
 
+      - name: Install dependencies 📦
+        run: |
+          sudo apt-get install jq
+          bun add -g svg-icon-review
+
       - name: Review SVG files 🔍
         run: |
           cd main
-          bun add -g svg-icon-review
           svgFiles=$(git diff --no-index ../main ../fork --diff-filter=ACMRTUX --name-only | grep '.svg$' | tr '\n' ' ')
           echo "SVG files changed: ${svgFiles}"
           echo "Generating preview..."
           svg-icon-review --bigIcon ${svgFiles}
-
-      - name: Install jq ⚙️
-        run: sudo apt-get install jq
 
       - name: Upload PNG ⬆️
         env:
