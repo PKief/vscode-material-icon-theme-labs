@@ -65,6 +65,7 @@ jobs:
             const iconsCount = parseInt("${{ env.svg_files_count }}");
             const imageURL = "${{ env.image_url }}";
             const image = `<img src="${imageURL}" alt="Generated preview" />`;
+            const pluralS = iconsCount > 1 ? "s" : "";
 
             let preview = "";
 
@@ -77,7 +78,7 @@ jobs:
             const comment = `
               ## Preview
 
-              Thank you for creating a pull request. This preview shows you how your changes will look on the different themes:
+              Thank you for creating a pull request. This preview shows you how your icon${pluralS} will look on the different themes:
 
               ${preview}
 
