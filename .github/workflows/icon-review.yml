@@ -52,7 +52,7 @@ jobs:
 
       - name: 🔍 Review SVG files
         run: |
-          bunx svg-icon-review@2.1.0 --bigIcon ${{ steps.get_changed_files.outputs.changed_svg_files }}
+          bunx svg-icon-review@2.1.0 --debug --bigIcon ${{ steps.get_changed_files.outputs.changed_svg_files }}
 
       - name: ⬆️ Upload preview image
         env:
