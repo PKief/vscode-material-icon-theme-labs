@@ -273,3 +273,5 @@ Take a look at the [contribution guidelines](https://github.com/material-extensi
 
 - [Material Icons for GitHub](https://github.com/material-extensions/material-icons-browser-extension)
 - [Material Product Icons](https://github.com/material-extensions/vscode-material-product-icons)
+
+Test
